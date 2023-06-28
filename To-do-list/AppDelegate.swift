@@ -2,7 +2,7 @@
 //  AppDelegate.swift
 //  To-do-list
 //
-//  Created by @_@ on 21.06.2023.
+//  Created by @_@ 
 //
 
 import UIKit
@@ -15,21 +15,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        
-        let a = TodoItem(id: "aaaaa", text: "aaa", importance: .important, deadline: Date(), isDone: false, dateOfChange: Date())
-        let b = TodoItem(text: "bbbb", importance: .usual)
-        let fileName = "jsonfile"
-
-        let cache = FileCache()
-        cache.addTodoItem(todoItem: a)
-        cache.addTodoItem(todoItem: b)
-        try! cache.saveToFile(fileName: fileName)
-        
-        let cache2 = FileCache()
-        try! cache2.loadFromFile(fileName: fileName)
-        
-        print(cache.todoItemCollection, cache2.todoItemCollection, separator: "\n\n\n\n")
-//        print(a.json)
         
         return true
     }

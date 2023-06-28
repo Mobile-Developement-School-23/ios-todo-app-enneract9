@@ -19,6 +19,11 @@
 		CE39264C2A43151E008EB676 /* To_do_listUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE39264B2A43151E008EB676 /* To_do_listUITestsLaunchTests.swift */; };
 		CE3926592A431555008EB676 /* FileCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3926582A431555008EB676 /* FileCache.swift */; };
 		CE39265B2A43159F008EB676 /* TodoItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE39265A2A43159F008EB676 /* TodoItem.swift */; };
+		CE4B39192A4C737D007B3083 /* ImportanceAndDeadlineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4B39182A4C737D007B3083 /* ImportanceAndDeadlineView.swift */; };
+		CE4B391C2A4C73D2007B3083 /* UIFont extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4B391B2A4C73D2007B3083 /* UIFont extension.swift */; };
+		CE4B391E2A4C73E6007B3083 /* UIColor extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4B391D2A4C73E6007B3083 /* UIColor extension.swift */; };
+		CE4B39202A4C7401007B3083 /* Date extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4B391F2A4C7401007B3083 /* Date extension.swift */; };
+		CE4B39222A4C7630007B3083 /* EditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4B39212A4C7630007B3083 /* EditorViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +60,11 @@
 		CE39264B2A43151E008EB676 /* To_do_listUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = To_do_listUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		CE3926582A431555008EB676 /* FileCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileCache.swift; sourceTree = "<group>"; };
 		CE39265A2A43159F008EB676 /* TodoItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoItem.swift; sourceTree = "<group>"; };
+		CE4B39182A4C737D007B3083 /* ImportanceAndDeadlineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportanceAndDeadlineView.swift; sourceTree = "<group>"; };
+		CE4B391B2A4C73D2007B3083 /* UIFont extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont extension.swift"; sourceTree = "<group>"; };
+		CE4B391D2A4C73E6007B3083 /* UIColor extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor extension.swift"; sourceTree = "<group>"; };
+		CE4B391F2A4C7401007B3083 /* Date extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date extension.swift"; sourceTree = "<group>"; };
+		CE4B39212A4C7630007B3083 /* EditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,14 +115,16 @@
 		CE3926242A43151C008EB676 /* To-do-list */ = {
 			isa = PBXGroup;
 			children = (
+				CE4B391A2A4C73BC007B3083 /* Extensions */,
+				CE4B39172A4C7319007B3083 /* Views */,
+				CE4B39162A4C7307007B3083 /* View Controllers */,
 				CE3926252A43151C008EB676 /* AppDelegate.swift */,
 				CE3926272A43151C008EB676 /* SceneDelegate.swift */,
-				CE3926292A43151C008EB676 /* ViewController.swift */,
 				CE39262B2A43151C008EB676 /* Main.storyboard */,
+				CE39262E2A43151C008EB676 /* To_do_list.xcdatamodeld */,
+				CE3926362A43151D008EB676 /* Info.plist */,
 				CE3926312A43151D008EB676 /* Assets.xcassets */,
 				CE3926332A43151D008EB676 /* LaunchScreen.storyboard */,
-				CE3926362A43151D008EB676 /* Info.plist */,
-				CE39262E2A43151C008EB676 /* To_do_list.xcdatamodeld */,
 				CE39265C2A431707008EB676 /* Home-task-1 */,
 			);
 			path = "To-do-list";
@@ -142,6 +154,33 @@
 				CE39265A2A43159F008EB676 /* TodoItem.swift */,
 			);
 			path = "Home-task-1";
+			sourceTree = "<group>";
+		};
+		CE4B39162A4C7307007B3083 /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				CE3926292A43151C008EB676 /* ViewController.swift */,
+				CE4B39212A4C7630007B3083 /* EditorViewController.swift */,
+			);
+			path = "View Controllers";
+			sourceTree = "<group>";
+		};
+		CE4B39172A4C7319007B3083 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				CE4B39182A4C737D007B3083 /* ImportanceAndDeadlineView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		CE4B391A2A4C73BC007B3083 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				CE4B391B2A4C73D2007B3083 /* UIFont extension.swift */,
+				CE4B391D2A4C73E6007B3083 /* UIColor extension.swift */,
+				CE4B391F2A4C7401007B3083 /* Date extension.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -278,8 +317,13 @@
 				CE39262A2A43151C008EB676 /* ViewController.swift in Sources */,
 				CE3926262A43151C008EB676 /* AppDelegate.swift in Sources */,
 				CE3926282A43151C008EB676 /* SceneDelegate.swift in Sources */,
+				CE4B391C2A4C73D2007B3083 /* UIFont extension.swift in Sources */,
+				CE4B39222A4C7630007B3083 /* EditorViewController.swift in Sources */,
+				CE4B391E2A4C73E6007B3083 /* UIColor extension.swift in Sources */,
+				CE4B39192A4C737D007B3083 /* ImportanceAndDeadlineView.swift in Sources */,
 				CE3926592A431555008EB676 /* FileCache.swift in Sources */,
 				CE39265B2A43159F008EB676 /* TodoItem.swift in Sources */,
+				CE4B39202A4C7401007B3083 /* Date extension.swift in Sources */,
 				CE3926302A43151C008EB676 /* To_do_list.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
