@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+final class ViewController: UIViewController {
     
     let creationButton: UIButton = {
         let button = UIButton(type: .system)
