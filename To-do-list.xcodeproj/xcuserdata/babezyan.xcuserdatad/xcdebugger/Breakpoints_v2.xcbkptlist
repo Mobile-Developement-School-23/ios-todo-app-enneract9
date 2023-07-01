@@ -3,4 +3,85 @@
    uuid = "675133F2-8960-458F-87A5-90C40633C92D"
    type = "1"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "DC6DF69A-690B-4501-A5C7-D24EE90A42EF"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "To-do-list/TableView Cells/TodoItemCell.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "56"
+            endingLineNumber = "56"
+            landmarkName = "importance"
+            landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "C9A671B6-9389-4E1D-8C7D-E0453AA8CB62"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "To-do-list/TableView Cells/TodoItemCell.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "55"
+            endingLineNumber = "55"
+            landmarkName = "importance"
+            landmarkType = "24">
+            <Locations>
+               <Location
+                  uuid = "C9A671B6-9389-4E1D-8C7D-E0453AA8CB62 - 125974cf140c7097"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "To_do_list.TodoItemCell.importance.setter : To_do_list.TodoItem.Importance"
+                  moduleName = "To-do-list"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/babezyan/Yandex/ios-todo-app-enneract9-main/To-do-list/TableView%20Cells/TodoItemCell.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "37"
+                  endingLineNumber = "37"
+                  offsetFromSymbolStart = "96">
+               </Location>
+               <Location
+                  uuid = "C9A671B6-9389-4E1D-8C7D-E0453AA8CB62 - 59ca2e0aacc2ae06"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "To_do_list.TodoItemCell.init(style: __C.UITableViewCellStyle, reuseIdentifier: Swift.Optional&lt;Swift.String&gt;) -&gt; To_do_list.TodoItemCell"
+                  moduleName = "To-do-list"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/babezyan/Yandex/ios-todo-app-enneract9-main/To-do-list/TableView%20Cells/TodoItemCell.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "37"
+                  endingLineNumber = "37"
+                  offsetFromSymbolStart = "392">
+               </Location>
+               <Location
+                  uuid = "C9A671B6-9389-4E1D-8C7D-E0453AA8CB62 - 8d63810e529544e6"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "To_do_list.TodoItemCell.init(coder: __C.NSCoder) -&gt; Swift.Optional&lt;To_do_list.TodoItemCell&gt;"
+                  moduleName = "To-do-list"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/babezyan/Yandex/ios-todo-app-enneract9-main/To-do-list/TableView%20Cells/TodoItemCell.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "37"
+                  endingLineNumber = "37"
+                  offsetFromSymbolStart = "360">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

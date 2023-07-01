@@ -15,6 +15,18 @@ private let dateFormatter: DateFormatter = {
      return dateFormatter
  }()
 
+private let croppedDateFormatter: DateFormatter = {
+     let dateFormatter = DateFormatter()
+     dateFormatter.locale = Locale(identifier: "Ru_ru")
+     dateFormatter.dateFormat = "dd MMMM"
+    
+     return dateFormatter
+ }()
+
 extension Date {
     var toString: String { dateFormatter.string(from: self) }
+}
+
+extension Date {
+    var toStringCropped: String { croppedDateFormatter.string(from: self) }
 }

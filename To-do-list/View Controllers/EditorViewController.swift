@@ -108,42 +108,6 @@ final class EditorViewController: UIViewController, UITextViewDelegate {
         deleteButton.isEnabled = true
     }
     
-    func setupView() {
-        view.addSubview(scrollView)
-        
-        scrollView.addSubview(stackView)
-        
-        stackView.addArrangedSubview(textView)
-        stackView.addArrangedSubview(importanceAndDeadlineView)
-        stackView.addArrangedSubview(deleteButton)
-    }
-    
-    func setupNavBar() {
-        self.title = "Дело"
-        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.headline]
-        view.backgroundColor = .backPrimary
-        
-        cancelButton = UIBarButtonItem(
-            title: "Отменить",
-            style: .plain,
-            target: self,
-            action: #selector(cancel)
-        )
-        
-        saveButton = UIBarButtonItem(
-            title: "Сохранить",
-            style: .done,
-            target: self,
-            action: #selector(save)
-        )
-        
-        cancelButton?.tintColor = .blue
-        saveButton?.tintColor = .labelTertiary
-        
-        navigationItem.leftBarButtonItem = cancelButton
-        navigationItem.rightBarButtonItem = saveButton
-    }
-    
     
     @objc func cancel() {
         dismiss(animated: true)
@@ -231,7 +195,43 @@ final class EditorViewController: UIViewController, UITextViewDelegate {
 }
 
 
-extension EditorViewController {
+private extension EditorViewController {
+    func setupView() {
+        view.addSubview(scrollView)
+        
+        scrollView.addSubview(stackView)
+        
+        stackView.addArrangedSubview(textView)
+        stackView.addArrangedSubview(importanceAndDeadlineView)
+        stackView.addArrangedSubview(deleteButton)
+    }
+    
+    func setupNavBar() {
+        self.title = "Дело"
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.headline]
+        view.backgroundColor = .backPrimary
+        
+        cancelButton = UIBarButtonItem(
+            title: "Отменить",
+            style: .plain,
+            target: self,
+            action: #selector(cancel)
+        )
+        
+        saveButton = UIBarButtonItem(
+            title: "Сохранить",
+            style: .done,
+            target: self,
+            action: #selector(save)
+        )
+        
+        cancelButton?.tintColor = .blue
+        saveButton?.tintColor = .labelTertiary
+        
+        navigationItem.leftBarButtonItem = cancelButton
+        navigationItem.rightBarButtonItem = saveButton
+    }
+    
     func setConstraints() {
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -244,6 +244,10 @@ extension EditorViewController {
             stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16),
             stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -16),
             stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -32),
+//            stackView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 16),
+//            stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16),
+//            stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -16),
+//            stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -32),
             
             textView.heightAnchor.constraint(greaterThanOrEqualToConstant: 120),
             

@@ -62,7 +62,6 @@ final class ImportanceAndDeadlineView: UIView {
         
         segmentedControll.setImage(lowImage, forSegmentAt: 0)
         segmentedControll.setImage(importantImage, forSegmentAt: 2)
-        //        segment.backgroundColor = .supportOverlayColorForSwitch
         segmentedControll.selectedSegmentIndex = 1
         segmentedControll.translatesAutoresizingMaskIntoConstraints = false
         
