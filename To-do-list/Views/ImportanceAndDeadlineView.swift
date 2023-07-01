@@ -8,7 +8,7 @@
 import UIKit
 
 //MARK: - ImportanceAndDeadlineView
-class ImportanceAndDeadlineView: UIView {
+final class ImportanceAndDeadlineView: UIView {
     
     //MARK: - Properties
     var deadline: Date?
@@ -62,7 +62,6 @@ class ImportanceAndDeadlineView: UIView {
         
         segmentedControll.setImage(lowImage, forSegmentAt: 0)
         segmentedControll.setImage(importantImage, forSegmentAt: 2)
-        //        segment.backgroundColor = .supportOverlayColorForSwitch
         segmentedControll.selectedSegmentIndex = 1
         segmentedControll.translatesAutoresizingMaskIntoConstraints = false
         
