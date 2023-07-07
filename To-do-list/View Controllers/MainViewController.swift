@@ -27,13 +27,16 @@ final class MainViewController: UIViewController, MainViewDelegate {
     }
     
     func updateData() {
-        try? fileCache.loadFromFile(fileName: fileName)
+//        try? fileCache.loadFromJsonFile(fileName: fileName)
+        
+        do {
+            try fileCache.loadFromCoreData()
+        } catch {
+            fatalError("cannot load todoList from CoreData")
+        }
+        
         todoItems = Array(fileCache.todoItemCollection.values).sorted(by: { $0.dateOfCreation >= $1.dateOfCreation } )
         mainView?.updateData(todoItems: todoItems)
-        
-//                print("\n_ _ _ _ _ _ _ _ _ _ _ _ READING _ _ _ _ _ _ _ _ _ _ _ _")
-//                print(todoItems)
-//                print("_ _ _ _ _ _ _ _ _ _ _ _ READING _ _ _ _ _ _ _ _ _ _ _ _\n")
     }
 
 // MARK: - MainViewDelegate conformation
@@ -57,17 +60,13 @@ final class MainViewController: UIViewController, MainViewDelegate {
     func saveTodoItem(_ todoItem: TodoItem) {
         
         fileCache.addTodoItem(todoItem: todoItem)
-        try? fileCache.saveToFile(fileName: fileName)
-//        print("\n_ _ _ _ _ _ _ _ _ _ _ _ WRITING _ _ _ _ _ _ _ _ _ _ _ _")
-//        print(fileCache.todoItemCollection)
-//        print("_ _ _ _ _ _ _ _ _ _ _ _ WRITING _ _ _ _ _ _ _ _ _ _ _ _\n")
         updateData()
     }
     
     // deletes todoItem from fileCache .json file in result of trailing swipe of cell in tableView (deletion in editor view performs in EditorViewController)
     func deleteTodoItem(_ todoItem: TodoItem) {
         _ = fileCache.removeTodoItem(id: todoItem.id)
-        try? fileCache.saveToFile(fileName: fileName)
+//        try? fileCache.saveToJsonFile(fileName: fileName)
         updateData()
     }
 }

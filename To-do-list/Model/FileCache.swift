@@ -19,6 +19,8 @@ class FileCache {
          Если в функцию добавления новой задачи приходит новый TodoItem с тем же id, мы перезаписываем данные в старый, то есть обновляем уже существующий адрес с таким id
          */
         
+        CoreDataManager.shared.updateOrInsertTodoItem(todoItem: todoItem)
+        
         todoItemCollection[todoItem.id] = todoItem
     }
     
@@ -28,10 +30,12 @@ class FileCache {
          Функция удаления задачи (на основе id)
          */
         
+        CoreDataManager.shared.deleteTodoItem(id: id)
+        
         return todoItemCollection.removeValue(forKey: id)
     }
     
-    func saveToFile(fileName: String) throws {
+    func saveToJsonFile(fileName: String) throws {
         
         /*
          Функция сохранения всех дел в файл (.documentDirectory)
@@ -51,7 +55,7 @@ class FileCache {
         try data.write(to: path)
     }
     
-    func loadFromFile(fileName: String) throws {
+    func loadFromJsonFile(fileName: String) throws {
         
         /*
          Функция загрузки всех дел из файла (.documentDirectory)
@@ -77,8 +81,20 @@ class FileCache {
         }
     }
     
+    func loadFromCoreData() throws {
+
+        guard let todoItems = CoreDataManager.shared.fetchAllTodoItems() else {
+            throw FileCacheErrors.cannotFetchFromCoreData
+        }
+        
+        self.todoItemCollection = todoItems.reduce(into: [:]) { res, item in
+            res[item.id] = item
+        }
+    }
+    
     enum FileCacheErrors: Error {
         case cannotFindSystemDirectory
         case unparsableData
+        case cannotFetchFromCoreData
     }
 }

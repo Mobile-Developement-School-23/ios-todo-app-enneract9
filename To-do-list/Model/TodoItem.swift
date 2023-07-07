@@ -109,3 +109,5 @@ extension TodoItem {
         return todoItem
     }
 }
+
+//    var sqlReplaceStatement: String не понятно, где можно было бы использовать в CoreData 🤔
