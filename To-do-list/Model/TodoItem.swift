@@ -17,13 +17,13 @@ struct TodoItem {
     let dateOfCreation: Date
     let dateOfChange: Date?
     
-    init(id: String = UUID().uuidString, text: String, importance: Importance, deadline: Date? = nil, isDone: Bool = false , dateOfChange: Date? = nil) {
+    init(id: String = UUID().uuidString, text: String, importance: Importance, deadline: Date? = nil, isDone: Bool = false , dateOfChange: Date? = nil, dateOfCreation: Date = Date()) {
         self.id = id
         self.text = text
         self.importance = importance
         self.deadline = deadline
         self.isDone = isDone
-        self.dateOfCreation = Date()
+        self.dateOfCreation = dateOfCreation
         self.dateOfChange = dateOfChange
     }
     
@@ -36,7 +36,7 @@ struct TodoItem {
         self.id = dict["id"] as? String ?? UUID().uuidString
         self.text = text
         self.importance = Importance(rawValue: dict["importance"] as? String ?? "") ?? .usual
-        self.isDone = Bool(dict["isDone"] as? String ?? "") ?? false
+        self.isDone = dict["isDone"] as? Bool ?? false
         self.dateOfCreation =  Date(timeIntervalSince1970: timeIntervalOfCreation)
         
         if let timeIntervalOfChange = dict["dateOfChange"] as? TimeInterval {

@@ -7,7 +7,10 @@
 
 import UIKit
 
-final class TodoItemCell: UITableViewCell {
+final class TodoItemCell1: UITableViewCell {
+    
+    static let identifier = "TodoItemCell1"
+    weak var delegate: TodoItemCellDelegate?
     
     public var todoItem: TodoItem? {
         didSet {
@@ -85,23 +88,34 @@ final class TodoItemCell: UITableViewCell {
                 attText.addAttribute(NSAttributedString.Key.strikethroughStyle, value: 2, range: NSRange(location: 0, length: attText.length))
             }
             todoLabel.attributedText = attText
-            checkBox.checked = isDone
+//            checkBox.checked = isDone
+            checkbox2.isChecked = isDone
+//            todoItem?.isDone = isDone
         }
     }
     
+    // MARK: - UI
     private lazy var checkBox: Checkbox = {
-        let checkBox = Checkbox()
+        let checkBox = Checkbox(frame: CGRect(x: 0, y: 0, width: 24, height: 24))
         checkBox.checked = self.isDone
         checkBox.isImportant = self.isImportant
         checkBox.translatesAutoresizingMaskIntoConstraints = false
-        checkBox.addTarget(self, action: #selector(checkBoxChecked), for: .valueChanged) // TODO: !!!!!!!!!!!!!!!!!!!
+        checkBox.addTarget(self, action: #selector(checkBoxChecked), for: .touchUpInside) // TODO: !!!!!!!!!!!!!!!!!!!
+        checkBox.isUserInteractionEnabled = true
         
         return checkBox
     }()
     
-    @objc func checkBoxChecked() {
-        print("aaaa")
-    }
+    private lazy var checkbox2: Checkbox2 = {
+        let checkbox = Checkbox2()
+        checkbox.isChecked = self.isDone
+        checkbox.isImportant = self.isImportant
+        checkbox.isUserInteractionEnabled = true
+        checkBox.translatesAutoresizingMaskIntoConstraints = false
+        checkBox.addTarget(self, action: #selector(checkBoxChecked), for: .touchUpInside)
+        
+        return checkbox
+    }()
     
     private lazy var importanceIcon: UIImageView = { // !!
         let imageView = UIImageView()
@@ -162,6 +176,17 @@ final class TodoItemCell: UITableViewCell {
         return label
     }()
     
+    // MARK: - Methods
+    @objc func checkBoxChecked() {
+        guard let todoItem = todoItem else {
+            fatalError("no todoitem")
+        }
+        self.isDone.toggle()
+        delegate?.saveTodoItem(todoItem: todoItem)
+        print("aaaaa")
+    }
+
+    // MARK: - Life cycle
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
@@ -174,8 +199,8 @@ final class TodoItemCell: UITableViewCell {
     }
 }
 
-// MARK: - ViewCell setup
-private extension TodoItemCell {
+// MARK: - TableViewCell setup
+private extension TodoItemCell1 {
     func setupSubviews() {
         addSubview(checkBox)
         addSubview(importanceIcon)
@@ -185,7 +210,7 @@ private extension TodoItemCell {
     }
 }
 
-private extension TodoItemCell {
+private extension TodoItemCell1 {
     func setupConstraints() {
         NSLayoutConstraint.activate([
             

@@ -7,11 +7,11 @@
 
 import UIKit
 
-//MARK: - ImportanceAndDeadlineView
 final class ImportanceAndDeadlineView: UIView {
     
     //MARK: - Properties
-    var deadline: Date?
+    weak var delegate: EditorView?
+    var todoItem: TodoItem?
     
     private lazy var mainStackView: UIStackView = {
         let stackView = UIStackView()
@@ -51,16 +51,17 @@ final class ImportanceAndDeadlineView: UIView {
         label.font = .body
         label.tintColor = .labelPrimary
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.heightAnchor.constraint(equalToConstant: 22).isActive = true
         
         return label
     }()
     
     lazy var importanceSegmentedControl: UISegmentedControl = {
         let segmentedControll = UISegmentedControl(items: ["", "нет", ""])
-        let lowImage = UIImage(named: "low")
+        let unimportantImage = UIImage(named: "unimportant")
         let importantImage = UIImage(named: "important")
         
-        segmentedControll.setImage(lowImage, forSegmentAt: 0)
+        segmentedControll.setImage(unimportantImage, forSegmentAt: 0)
         segmentedControll.setImage(importantImage, forSegmentAt: 2)
         segmentedControll.selectedSegmentIndex = 1
         segmentedControll.translatesAutoresizingMaskIntoConstraints = false
@@ -71,14 +72,17 @@ final class ImportanceAndDeadlineView: UIView {
     private lazy var divider1: UIView = {
         let view = UIView()
         view.backgroundColor = .supportSeparator
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.heightAnchor.constraint(equalToConstant: 1 / UIScreen.main.scale).isActive = true
         
         return view
     }()
+    
     private lazy var divider2: UIView = {
         let view = UIView()
         view.backgroundColor = .supportSeparator
-        view.isHidden = true
-        view.alpha = 0
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.heightAnchor.constraint(equalToConstant: 1 / UIScreen.main.scale).isActive = true
         
         return view
     }()
@@ -99,6 +103,7 @@ final class ImportanceAndDeadlineView: UIView {
         label.font = .body
         label.textColor = .labelPrimary
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.heightAnchor.constraint(equalToConstant: 22).isActive = true
         
         return label
     }()
@@ -143,6 +148,9 @@ final class ImportanceAndDeadlineView: UIView {
     //MARK: - Initializers
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
+        todoItem = delegate?.todoItem
+        
         setupView()
         setConstraints()
         setupDate()
@@ -153,6 +161,7 @@ final class ImportanceAndDeadlineView: UIView {
     }
     
     //MARK: - Methods
+    
     @objc private func deadlineSwitchDidToggled() {
         showDeadlineButton(bool: true)
         
@@ -163,6 +172,7 @@ final class ImportanceAndDeadlineView: UIView {
         }
     }
     
+    // Shows/Hides deadlineButton
     func showDeadlineButton(bool: Bool) {
         if bool {
             UIView.animate(withDuration: 0.5, animations: { [weak self] in
@@ -176,6 +186,7 @@ final class ImportanceAndDeadlineView: UIView {
         }
     }
     
+    // Shows/hides datePicker
     @objc func deadlineButtonDidTapped() {
         UIView.animate(withDuration: 0.5, animations: { [weak self] in
             guard let self = self else { return }
@@ -183,8 +194,8 @@ final class ImportanceAndDeadlineView: UIView {
         })
     }
     
+    // Setups date for datePicker
     private func setupDate() {
-        guard deadline == nil else { return }
         let calendar = Calendar.current
         datePicker.minimumDate = calendar.startOfDay(for: Date())
         if let nextDay = calendar.date(byAdding: .day, value: 1, to: Date()) {
@@ -192,10 +203,12 @@ final class ImportanceAndDeadlineView: UIView {
         }
     }
     
+    // Changes title of deadlineButton when date in datePicker changes
     @objc private func datePickerValueChanged() {
         deadlineButton.setTitle(datePicker.date.toString, for: .normal)
     }
-    
+    // TODO: Rename
+    // Shows/hides datePicker
     private func setDefaultDatePicker() {
         setupDate()
         
@@ -208,6 +221,7 @@ final class ImportanceAndDeadlineView: UIView {
         translatesAutoresizingMaskIntoConstraints = false
         backgroundColor = .backSecondary
         layer.cornerRadius = 16
+        divider2.isHidden = true
         
         addSubview(mainStackView)
         
@@ -239,11 +253,7 @@ final class ImportanceAndDeadlineView: UIView {
             
             deadlineStackView.heightAnchor.constraint(equalToConstant: 56),
             
-            deadlineLabel.heightAnchor.constraint(equalToConstant: 22),
-            deadlineButton.heightAnchor.constraint(equalToConstant: 18),
-            
-            divider1.heightAnchor.constraint(equalToConstant: 0.666),
-            divider2.heightAnchor.constraint(equalToConstant: 0.666),
+            deadlineButton.heightAnchor.constraint(equalToConstant: 18)
         ])
     }
 }

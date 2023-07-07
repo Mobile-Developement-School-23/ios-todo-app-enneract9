@@ -9,249 +9,154 @@ import UIKit
 
 final class EditorViewController: UIViewController, UITextViewDelegate {
     
-    var todoItem: TodoItem?
-    var keyboardHeight: CGFloat = 0
+    // MARK: - Properties
+    private let todoItem: TodoItem?
+    private var editorView: EditorView?
+    weak var delegate: MainViewController?
     
-    var cancelButton: UIBarButtonItem?
-    var saveButton: UIBarButtonItem?
+    // MARK: - Lifecycle
+    init(todoItem: TodoItem?) {
+        self.todoItem = todoItem
+
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
-    private lazy var scrollView: UIScrollView = {
-        let scrollView = UIScrollView()
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.backgroundColor = .backPrimary
-        return scrollView
-    }()
-    
-    private lazy var stackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .vertical
-        stackView.distribution = .equalSpacing
-        stackView.spacing = 16
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        return stackView
-    }()
-    
-    private lazy var textView: UITextView = {
-        let textView = UITextView()
-        textView.textContainerInset = UIEdgeInsets(top: 17, left: 16, bottom: 12, right: 16)
-        textView.backgroundColor = .backSecondary
-        textView.isScrollEnabled = false
-        textView.layer.cornerRadius = 16
-        textView.font = .body
-        textView.text = "Что надо сделать?"
-        textView.textColor = .labelTertiary
-        textView.delegate = self
-        textView.translatesAutoresizingMaskIntoConstraints = false
-        return textView
-    }()
-    
-    private lazy var importanceAndDeadlineView = ImportanceAndDeadlineView()
-    
-    private lazy var deleteButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Удалить", for: .normal)
-        button.setTitleColor(.red, for: .normal)
-        button.setTitleColor(.labelTertiary, for: .disabled)
-        button.titleLabel?.font = .body
-        button.backgroundColor = .backSecondary
-        button.layer.cornerRadius = 16
-        button.isEnabled = false
-        button.addTarget(self, action: #selector(deleteButtonDidTapped), for: .touchUpInside)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
-    
+    // MARK: - Methods
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        let tap = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
-        tap.cancelsTouchesInView = false
-        scrollView.addGestureRecognizer(tap)
-        
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(keyboardDidShow(keyboardShowNotification:)),
-                                               name: UIResponder.keyboardDidShowNotification,
-                                               object: nil)
-        
-        setupNavBar()
-        checkTodoItem()
+
         setupView()
-        setConstraints()
+        setupNavBar()
     }
     
-    func checkTodoItem() {
-        guard let todoItem else {
-            return
-        }
-        
-        textView.text = todoItem.text
-        textView.textColor = .labelPrimary
-        
-        switch todoItem.importance {
-        case .unimportant:
-            importanceAndDeadlineView.importanceSegmentedControl.selectedSegmentIndex = 0
-        case .usual:
-            importanceAndDeadlineView.importanceSegmentedControl.selectedSegmentIndex = 1
-        case .important:
-            importanceAndDeadlineView.importanceSegmentedControl.selectedSegmentIndex = 2
-        }
-        
-        if let deadline = todoItem.deadline {
-            importanceAndDeadlineView.deadline = deadline
-            importanceAndDeadlineView.datePicker.date = deadline
-            importanceAndDeadlineView.deadlineButton.setTitle(deadline.toString, for: .normal)
-            importanceAndDeadlineView.deadlineSwitch.isOn = true
-            importanceAndDeadlineView.showDeadlineButton(bool: true)
-        }
-        saveButton?.tintColor = .blue
-        
-        deleteButton.isEnabled = true
+    override func viewWillDisappear(_ animated: Bool) {
+        delegate?.updateData()
     }
     
+    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.willTransition(to: newCollection, with: coordinator)
+        view.setNeedsUpdateConstraints()
+    }
     
-    @objc func cancel() {
+    // action for left button in navBar
+    @objc private func cancelButtonDidTapped() {
         dismiss(animated: true)
     }
     
-    @objc func save() {
-        let fc = FileCache()
+    // action for right button in navBar
+    @objc private func saveButtonDidTapped() {
         var importance: TodoItem.Importance = .usual
-        
-        switch importanceAndDeadlineView.importanceSegmentedControl.selectedSegmentIndex {
+        switch editorView?.importanceAndDeadlineView.importanceSegmentedControl.selectedSegmentIndex {
         case 0: importance = .unimportant
-        case 2: importance = .important
-        default: importance = .usual
+        case 1: importance = .usual
+        default: importance = .important
         }
-        
-        let todo = TodoItem(
-            text: textView.text,
+        let todoItem = TodoItem(
+            id: todoItem?.id ?? UUID().uuidString,
+            text: editorView?.textView.text ?? "Error",
             importance: importance,
-            deadline: importanceAndDeadlineView.deadlineSwitch.isOn ? importanceAndDeadlineView.datePicker.date : nil
+            deadline: (editorView?.importanceAndDeadlineView.deadlineSwitch.isOn ?? false) ? editorView?.importanceAndDeadlineView.datePicker.date : nil
         )
-        fc.addTodoItem(todoItem: todo)
-        try? fc.saveToFile(fileName: "TodoItems")
-        todoItem = todo
+        _ = delegate?.fileCache.addTodoItem(todoItem: todoItem)
+        try? delegate?.fileCache.saveToFile(fileName: "Cache")
         dismiss(animated: true)
     }
-    
-    
-    func textViewDidBeginEditing(_ textView: UITextView) {
+}
+
+// MARK: - EditorViewDelegate conformance
+extension EditorViewController: EditorViewDelegate {
+
+    // Avoiding saving text of todoItem with extra spaces
+    func textDidChange(_ textView: UITextView) {
+        let trimmedText = textView.text.trimmingCharacters(in: .whitespacesAndNewlines)
+
+        if !trimmedText.isEmpty { // enable save button in navBar
+            if let rightButton = navigationItem.rightBarButtonItem {
+                rightButton.isEnabled = true
+                rightButton.tintColor = .blue
+            }
+        } else { // disable save button in navBar
+            if let rightButton = navigationItem.rightBarButtonItem {
+                rightButton.isEnabled = false
+                rightButton.tintColor = .labelTertiary
+            }
+        }
+    }
+
+    // Placeholder deleton when user start to edit text to textView
+    func textDidBeginEditing(textView: UITextView) {
         if textView.textColor?.cgColor == UIColor.labelTertiary.cgColor {
             textView.text = nil
             textView.textColor = .labelPrimary
-            saveButton?.isEnabled = true
-            saveButton?.tintColor = .blue
         }
     }
-    
-    func textViewDidEndEditing(_ textView: UITextView) {
+
+    // Additing placeholder when user stops editing text in textView and text is empty
+    func textDidEndEditing(textView: UITextView) {
+        let trimmedText = textView.text.trimmingCharacters(in: .whitespacesAndNewlines)
+
         if textView.text.isEmpty {
             textView.text = "Что надо сделать?"
             textView.textColor = .labelTertiary
-            saveButton?.isEnabled = false
-            saveButton?.tintColor = .labelTertiary
         }
-        
-        scrollView.contentInset = UIEdgeInsets(
-            top: 0, left: 0, bottom: 0, right: 0
-        )
+        if trimmedText.isEmpty { // disable save button in navBar
+            if let rightButton = navigationItem.rightBarButtonItem {
+                rightButton.isEnabled = false
+                rightButton.tintColor = .labelTertiary
+            }
+        }
     }
-    
-    @objc func dismissKeyboard() {
-        view.endEditing(true)
-    }
-    
-    @objc func deleteButtonDidTapped() {
-        let fc = FileCache()
-        try? fc.loadFromFile(fileName: "TodoItems")
-        _ = fc.removeTodoItem(id: "1")
-        try? fc.saveToFile(fileName: "TodoItems")
-        todoItem = nil
-        resetButtons()
-        importanceAndDeadlineView.showDeadlineButton(bool: false)
+
+    func deleteButtonDidTapped(_ todoItem: TodoItem) {
+        // TODO: Перенести это все в главный контроллер, чтобы не плодить экземпляры FileCache
+        _ = delegate?.fileCache.removeTodoItem(id: todoItem.id)
+        try? delegate?.fileCache.saveToFile(fileName: "Cache")
         dismiss(animated: true)
     }
-    
-    @objc func keyboardDidShow(keyboardShowNotification notification: Notification) {
-        if let userInfo = notification.userInfo,
-            let keyboardRectangle = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
-            keyboardHeight = keyboardRectangle.height
-            scrollView.contentInset = UIEdgeInsets(
-                top: 0, left: 0, bottom: keyboardHeight, right: 0
-            )
-        }
-    }
-    
-    func resetButtons() {
-        saveButton?.isEnabled = false
-        textView.text = "Что надо сделать?"
-        textView.textColor = .labelTertiary
-        importanceAndDeadlineView.importanceSegmentedControl.selectedSegmentIndex = 1
-        importanceAndDeadlineView.datePicker.date = Date()
-        importanceAndDeadlineView.deadlineSwitch.isOn = false
-        deleteButton.isEnabled = false
-    }
-    
 }
 
-
-private extension EditorViewController {
-    func setupView() {
-        view.addSubview(scrollView)
-        
-        scrollView.addSubview(stackView)
-        
-        stackView.addArrangedSubview(textView)
-        stackView.addArrangedSubview(importanceAndDeadlineView)
-        stackView.addArrangedSubview(deleteButton)
+// MARK: Setting up Editor view
+extension EditorViewController {
+    private func setupView() {
+        editorView = EditorView(todoItem: todoItem)
+        editorView?.delegate = self
+        view = self.editorView
     }
     
-    func setupNavBar() {
-        self.title = "Дело"
-        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.headline]
+    // Setting up navigation bar
+    private func setupNavBar() {
+        title = "Дело"
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.headline]
         view.backgroundColor = .backPrimary
-        
-        cancelButton = UIBarButtonItem(
+
+        let cancelButton = UIBarButtonItem(
             title: "Отменить",
             style: .plain,
             target: self,
-            action: #selector(cancel)
+            action: #selector(cancelButtonDidTapped)
         )
-        
-        saveButton = UIBarButtonItem(
+
+        let saveButton = UIBarButtonItem(
             title: "Сохранить",
             style: .done,
             target: self,
-            action: #selector(save)
+            action: #selector(saveButtonDidTapped)
         )
-        
-        cancelButton?.tintColor = .blue
-        saveButton?.tintColor = .labelTertiary
-        
+
+        cancelButton.tintColor = .blue
+        if todoItem != nil {
+            saveButton.isEnabled = true
+            saveButton.tintColor = .blue
+        } else {
+            saveButton.isEnabled = false
+            saveButton.tintColor = .labelTertiary
+        }
+
         navigationItem.leftBarButtonItem = cancelButton
         navigationItem.rightBarButtonItem = saveButton
-    }
-    
-    func setConstraints() {
-        NSLayoutConstraint.activate([
-            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -keyboardHeight),
-            
-            
-            stackView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 16),
-            stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16),
-            stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -16),
-            stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -32),
-//            stackView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 16),
-//            stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16),
-//            stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -16),
-//            stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -32),
-            
-            textView.heightAnchor.constraint(greaterThanOrEqualToConstant: 120),
-            
-            deleteButton.heightAnchor.constraint(equalToConstant: 56)
-        ])
     }
 }

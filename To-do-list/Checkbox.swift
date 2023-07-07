@@ -16,11 +16,7 @@ final class Checkbox: UIControl {
     
     private weak var imageView: UIImageView!
     
-    public var checked: Bool = false {
-        didSet {
-            imageView.image = checked ? checkedImage : isImportant ? uncheckedImportantImage : uncheckedImage
-        }
-    }
+    public var checked: Bool = false
     
     public var isImportant: Bool = false {
         didSet {
@@ -44,8 +40,8 @@ final class Checkbox: UIControl {
         addSubview(imageView)
         
         NSLayoutConstraint.activate([
-            widthAnchor.constraint(equalToConstant: 24),
-            heightAnchor.constraint(equalToConstant: 24),
+//            widthAnchor.constraint(equalToConstant: 24),
+//            heightAnchor.constraint(equalToConstant: 24),
             imageView.topAnchor.constraint(equalTo: topAnchor),
             imageView.leadingAnchor.constraint(equalTo: leadingAnchor),
             imageView.trailingAnchor.constraint(equalTo: trailingAnchor),
@@ -59,11 +55,16 @@ final class Checkbox: UIControl {
         
         backgroundColor = .clear
         
-        addTarget(self, action: #selector(checkedToggled), for: .touchUpInside)
+        addTarget(self, action: #selector(checkboxDidTouched), for: .touchUpInside)
     }
     
-    @objc func checkedToggled() {
+    @objc func checkboxDidTouched() {
         checked.toggle()
+        updateCheckbox()
         sendActions(for: .valueChanged)
+    }
+    
+    func updateCheckbox() {
+        imageView.image = checked ? checkedImage : isImportant ? uncheckedImportantImage : uncheckedImage
     }
 }

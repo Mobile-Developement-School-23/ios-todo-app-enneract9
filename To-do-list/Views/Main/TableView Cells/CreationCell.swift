@@ -9,6 +9,8 @@ import UIKit
 
 final class CreationCell: UITableViewCell {
     
+    static let identifier = "CreationCell"
+    
     private lazy var icon: UIImageView = {
         let imageView = UIImageView()
         var image = UIImage(systemName: "plus.circle.fill")?.withRenderingMode(.alwaysOriginal) ?? UIImage()
@@ -47,15 +49,14 @@ final class CreationCell: UITableViewCell {
     }
     
     private func setupConstraints() {
-        NSLayoutConstraint.activate([ // TODO: Поправить ошибку
+        NSLayoutConstraint.activate([
             icon.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
             icon.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             
-            label.topAnchor.constraint(equalTo: self.topAnchor, constant: 12),
+            label.topAnchor.constraint(equalTo: self.topAnchor, constant: 16),
             label.leadingAnchor.constraint(equalTo: icon.trailingAnchor, constant: 12),
             label.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
-            label.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -12),
-            label.heightAnchor.constraint(equalToConstant: 32),
+            label.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -16),
             label.centerYAnchor.constraint(equalTo: self.centerYAnchor)
         ])
     }
