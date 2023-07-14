@@ -11,7 +11,7 @@
 		CE3926262A43151C008EB676 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3926252A43151C008EB676 /* AppDelegate.swift */; };
 		CE3926282A43151C008EB676 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3926272A43151C008EB676 /* SceneDelegate.swift */; };
 		CE39262D2A43151C008EB676 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE39262B2A43151C008EB676 /* Main.storyboard */; };
-		CE3926302A43151C008EB676 /* To_do_list.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CE39262E2A43151C008EB676 /* To_do_list.xcdatamodeld */; };
+		CE3926302A43151C008EB676 /* CoreData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CE39262E2A43151C008EB676 /* CoreData.xcdatamodeld */; };
 		CE3926322A43151D008EB676 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE3926312A43151D008EB676 /* Assets.xcassets */; };
 		CE3926352A43151D008EB676 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE3926332A43151D008EB676 /* LaunchScreen.storyboard */; };
 		CE3926402A43151E008EB676 /* To_do_listTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE39263F2A43151E008EB676 /* To_do_listTests.swift */; };
@@ -36,6 +36,9 @@
 		CEFAFAE42A55EAD100988ECB /* EditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEFAFAE32A55EAD100988ECB /* EditorView.swift */; };
 		CEFAFAE62A55EB1600988ECB /* EditorViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEFAFAE52A55EB1600988ECB /* EditorViewDelegate.swift */; };
 		CEFAFAE82A5610A200988ECB /* TestVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEFAFAE72A5610A200988ECB /* TestVC.swift */; };
+		CEFEFA922A5ED591009C4E20 /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = CEFEFA912A5ED591009C4E20 /* SQLite */; };
+		CEFEFA962A6058D2009C4E20 /* TodoItemEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEFEFA942A6058D2009C4E20 /* TodoItemEntity.swift */; };
+		CEFEFA982A605C49009C4E20 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEFEFA972A605C49009C4E20 /* CoreDataManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -89,6 +92,8 @@
 		CEFAFAE32A55EAD100988ECB /* EditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorView.swift; sourceTree = "<group>"; };
 		CEFAFAE52A55EB1600988ECB /* EditorViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorViewDelegate.swift; sourceTree = "<group>"; };
 		CEFAFAE72A5610A200988ECB /* TestVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestVC.swift; sourceTree = "<group>"; };
+		CEFEFA942A6058D2009C4E20 /* TodoItemEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoItemEntity.swift; sourceTree = "<group>"; };
+		CEFEFA972A605C49009C4E20 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +101,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CEFEFA922A5ED591009C4E20 /* SQLite in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -141,6 +147,7 @@
 			children = (
 				CE3926362A43151D008EB676 /* Info.plist */,
 				CE3926312A43151D008EB676 /* Assets.xcassets */,
+				CEFEFA8F2A5ECDC9009C4E20 /* CoreData */,
 				CE4B391A2A4C73BC007B3083 /* Extensions */,
 				CE4B39172A4C7319007B3083 /* Views */,
 				CE4B39162A4C7307007B3083 /* View Controllers */,
@@ -224,7 +231,6 @@
 			children = (
 				CE39262B2A43151C008EB676 /* Main.storyboard */,
 				CE3926332A43151D008EB676 /* LaunchScreen.storyboard */,
-				CE39262E2A43151C008EB676 /* To_do_list.xcdatamodeld */,
 			);
 			path = etc;
 			sourceTree = "<group>";
@@ -259,6 +265,16 @@
 			path = Editor;
 			sourceTree = "<group>";
 		};
+		CEFEFA8F2A5ECDC9009C4E20 /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				CEFEFA942A6058D2009C4E20 /* TodoItemEntity.swift */,
+				CEFEFA972A605C49009C4E20 /* CoreDataManager.swift */,
+				CE39262E2A43151C008EB676 /* CoreData.xcdatamodeld */,
+			);
+			path = CoreData;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -275,6 +291,9 @@
 			dependencies = (
 			);
 			name = "To-do-list";
+			packageProductDependencies = (
+				CEFEFA912A5ED591009C4E20 /* SQLite */,
+			);
 			productName = "To-do-list";
 			productReference = CE3926222A43151C008EB676 /* To-do-list.app */;
 			productType = "com.apple.product-type.application";
@@ -347,6 +366,9 @@
 				Base,
 			);
 			mainGroup = CE3926192A43151C008EB676;
+			packageReferences = (
+				CEFEFA902A5ED591009C4E20 /* XCRemoteSwiftPackageReference "SQLite" */,
+			);
 			productRefGroup = CE3926232A43151C008EB676 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -392,6 +414,7 @@
 			files = (
 				CEFAFAD72A554E0700988ECB /* MainView.swift in Sources */,
 				CE3926262A43151C008EB676 /* AppDelegate.swift in Sources */,
+				CEFEFA982A605C49009C4E20 /* CoreDataManager.swift in Sources */,
 				CE3926282A43151C008EB676 /* SceneDelegate.swift in Sources */,
 				CEE0DA702A56CD3700CA8665 /* TodoItemCell.swift in Sources */,
 				CEFAFAE42A55EAD100988ECB /* EditorView.swift in Sources */,
@@ -406,12 +429,13 @@
 				CE3926592A431555008EB676 /* FileCache.swift in Sources */,
 				CEFAFAD52A5548ED00988ECB /* TodoItemCellDelegate.swift in Sources */,
 				CEFAFADF2A5591CA00988ECB /* UIView extension.swift in Sources */,
+				CEFEFA962A6058D2009C4E20 /* TodoItemEntity.swift in Sources */,
 				CE94DB412A4F8FED005E4385 /* CreationCell.swift in Sources */,
 				CEFAFAE62A55EB1600988ECB /* EditorViewDelegate.swift in Sources */,
 				CE0F12752A58B82500141F68 /* URLSession extension.swift in Sources */,
 				CE39265B2A43159F008EB676 /* TodoItem.swift in Sources */,
 				CE4B39202A4C7401007B3083 /* Date extension.swift in Sources */,
-				CE3926302A43151C008EB676 /* To_do_list.xcdatamodeld in Sources */,
+				CE3926302A43151C008EB676 /* CoreData.xcdatamodeld in Sources */,
 				CEFAFADB2A5585C800988ECB /* MainViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -755,14 +779,33 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		CEFEFA902A5ED591009C4E20 /* XCRemoteSwiftPackageReference "SQLite" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/stephencelis/SQLite.swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.14.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		CEFEFA912A5ED591009C4E20 /* SQLite */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CEFEFA902A5ED591009C4E20 /* XCRemoteSwiftPackageReference "SQLite" */;
+			productName = SQLite;
+		};
+/* End XCSwiftPackageProductDependency section */
+
 /* Begin XCVersionGroup section */
-		CE39262E2A43151C008EB676 /* To_do_list.xcdatamodeld */ = {
+		CE39262E2A43151C008EB676 /* CoreData.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
 				CE39262F2A43151C008EB676 /* To_do_list.xcdatamodel */,
 			);
 			currentVersion = CE39262F2A43151C008EB676 /* To_do_list.xcdatamodel */;
-			path = To_do_list.xcdatamodeld;
+			path = CoreData.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

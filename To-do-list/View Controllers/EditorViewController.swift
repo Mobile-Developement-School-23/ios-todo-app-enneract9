@@ -55,14 +55,19 @@ final class EditorViewController: UIViewController, UITextViewDelegate {
         case 1: importance = .usual
         default: importance = .important
         }
+        
         let todoItem = TodoItem(
             id: todoItem?.id ?? UUID().uuidString,
             text: editorView?.textView.text ?? "Error",
             importance: importance,
-            deadline: (editorView?.importanceAndDeadlineView.deadlineSwitch.isOn ?? false) ? editorView?.importanceAndDeadlineView.datePicker.date : nil
+            deadline: (editorView?.importanceAndDeadlineView.deadlineSwitch.isOn ?? false) ? editorView?.importanceAndDeadlineView.datePicker.date : nil,
+            isDone: todoItem?.isDone ?? false,
+            dateOfChange: todoItem?.dateOfChange,
+            dateOfCreation: todoItem?.dateOfCreation ?? Date()
         )
-        _ = delegate?.fileCache.addTodoItem(todoItem: todoItem)
-        try? delegate?.fileCache.saveToFile(fileName: "Cache")
+        
+        delegate?.fileCache.addTodoItem(todoItem: todoItem)
+//        try? delegate?.fileCache.saveToJsonFile(fileName: "Cache")
         dismiss(animated: true)
     }
 }
@@ -114,7 +119,7 @@ extension EditorViewController: EditorViewDelegate {
     func deleteButtonDidTapped(_ todoItem: TodoItem) {
         // TODO: Перенести это все в главный контроллер, чтобы не плодить экземпляры FileCache
         _ = delegate?.fileCache.removeTodoItem(id: todoItem.id)
-        try? delegate?.fileCache.saveToFile(fileName: "Cache")
+//        try? delegate?.fileCache.saveToJsonFile(fileName: "Cache")
         dismiss(animated: true)
     }
 }
